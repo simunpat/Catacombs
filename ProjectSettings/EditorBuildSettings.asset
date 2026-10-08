@@ -1,0 +1,45 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1045 &1
+EditorBuildSettings:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/MainMenu.unity
+    guid: 1bcee3776fc99453e8ebb3ad2fe48dc5
+  - enabled: 1
+    path: Assets/Scenes/Tutorial-Arrival.unity
+    guid: d70ab163049dd42ccb15c4ce1e074bba
+  - enabled: 1
+    path: Assets/Scenes/Tutorial-Grave-Chamber.unity
+    guid: 5d6570be284f546c785418169f3b1784
+  - enabled: 1
+    path: Assets/Scenes/00-Hallway.unity
+    guid: d53ec01cc6cf849e999dd4cd1f991bf9
+  - enabled: 1
+    path: Assets/Scenes/01-Pillar-Hall.unity
+    guid: 9b4e3388245734f17967f5b41c544c36
+  - enabled: 1
+    path: Assets/Scenes/02-Ritual-Chamber.unity
+    guid: c5799961c58864785bc580952e9b1ed3
+  - enabled: 1
+    path: Assets/Scenes/03-Burial-Corridors.unity
+    guid: f505db13723754643bd4ea1c967cd97e
+  - enabled: 1
+    path: Assets/Scenes/04-Forgotten-Crossroads.unity
+    guid: 873ef681fbbbb4826915512f9ae1b2ba
+  - enabled: 1
+    path: Assets/Scenes/05-Empty-Ossuary.unity
+    guid: f691797e08cd24d5cb1accf3a169cc7e
+  - enabled: 1
+    path: Assets/Scenes/06-Grave-Chamber.unity
+    guid: f90e5aaf2a6794b4695849e66a170464
+  - enabled: 1
+    path: Assets/Scenes/07-Warden-Chamber.unity
+    guid: 4e860fdf05c2c4372b374800ca66bfa3
+  - enabled: 0
+    path: Assets/Scenes/SampleScene.unity
+    guid: 8c9cfa26abfee488c85f1582747f6a02
+  m_configObjects:
+    com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}

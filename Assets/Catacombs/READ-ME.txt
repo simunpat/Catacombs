@@ -1,0 +1,154 @@
+CATACOMBS · Símun Pætur á Torkilsheyggi · v1
+
+Åbn Assets/Scenes/MainMenu.unity og tryk Play. Builds starter automatisk i hovedmenuen.
+START SPIL starter et nyt run: første gang via introen, ellers direkte i gangen. SPIL INTRO gentager introduktionen. AFSLUT lukker spillet (stopper Play i Editor).
+Hovedmenuen bruger Infinite Darkness, kan betjenes med mus eller piletaster/Enter og nulstiller runnet uden at slette tutorial-status.
+Første gang: lær bevægelse og dash i indgangen, og sigte/skydning mod én Crawler i Tutorial-Grave-Chamber.
+Handlingsbaserede beskeder forsvinder, når du har lært handlingen. Døren åbner efter dash / efter fjendens død.
+Tutorialen giver ingen opgradering og tæller ikke som et af de fire rum. Dit liv fyldes op ved udgangen.
+SPRING INTRO OVER går direkte til gangen. Gennemført/sprunget intro huskes via PlayerPrefs.
+Hovedmenuens SPIL INTRO kan starte introen igen (det starter et nyt run). Direkte Play fra gangen springer også introen over uden at gemme det.
+WASD/piletaster: bevægelse. Mus: sigte. Hold venstre museknap: skyd.
+Space: dash (usårlig under dash). T: vis et situationsbestemt tip i seks sekunder. R: nyt run. Esc: pause og kontroloversigt.
+Pausemenuen har Start igen (nyt run), Tilbage til start menu og Afslut (lukker spillet, eller stopper Play i Editor). Esc fortsætter kampen.
+Gå ind i en af gangens fire ens døre. Fire af seks forskellige rum vælges og fordeles én gang pr. etage.
+Ryd rummet og gå til døren øverst. Normale rum giver ingen opgraderinger.
+Du vender tilbage ved den dør, du kom fra. Ryddede rum markeres og kan ikke vælges igen.
+Bossdøren øverst i gangen åbner først, når alle fire normale rum er ryddet.
+Efter bossen på etage 1–4 vælger du én af tre opgraderinger med mus eller tasterne 1, 2, 3.
+Livskilde er altid det første valg, også ved fuldt liv. De to andre er tilfældige, forskellige opgraderinger.
+Efter valget på etage 1–4 åbner trappen øverst i bossrummet. Gå ind i den for at fortsætte ned.
+HP og alle opgraderinger følger med. Rumfordeling, ryddede rum og bosslås nulstilles på den nye etage.
+Bossen på etage 5 giver ingen opgradering: sejrsbeskeden vises straks. TIL HOVEDMENU eller R på sejrsskærmen vender tilbage til startmenuen.
+Ved nederlag starter PRØV IGEN eller R hele runnet forfra (ufærdig tutorial gentages).
+
+OPBYGNING
+MainMenu er første buildscene og har MainMenuController, Canvas, kamera og EventSystem uden gameplay-objekter.
+To separate tutorialscener efterfølges af en gang, seks normale rumlayouts og et bossrum, som genbruges på fem etager.
+Et helt run har 20 normale kampe, fem bosskampe og fire bossbelønninger, plus den valgfrie tutorial.
+Spilregler (RoomController) forbinder fjender, dør og Canvas.
+RoomKind skelner mellem gang, normalt kammer, bossrum og de to tutorialrum.
+TutorialController følger faktisk bevægelse, dash og afgivne skud. Crawleren vågner ét sekund efter det første skud.
+TutorialProgress gemmer kun introduktionens gennemførelse, aldrig run-fremgang.
+HallwayController placerer spilleren og opdaterer dørene. HallwayDoor håndterer indgange.
+Player har PlayerMovement, PlayerWeapon og PlayerHealth.
+Hver fjende har EnemyHealth og enten EnemyController eller BossController.
+RunState holder etage, HP, opgraderinger, rumfordeling, encounters, returpunkt og gennemførte rum mellem scenerne.
+FloorEncounter vælger etagens antal og blanding af fjender fra et gemt seed.
+RoomEncounter spawner fjender ved klare spawnmarkører, når et normalt rum loades.
+Fjender er ikke længere låst til layoutet eller placeret fast i scenen.
+R nulstiller det hele og starter med en ny tilfældig rumfordeling, undtagen på sejrsskærmen, hvor R åbner hovedmenuen.
+Prefabs ligger i Assets/Catacombs/Prefabs. Grafik ligger i Art.
+De seks UpgradeDefinition-assets i Upgrades kan redigeres i Inspector.
+Scripts ligger i Assets/Scripts. Felter som fart, liv og angrebsinterval kan justeres.
+Boss-test i Unity: Åbn 07-Warden-Chamber, vælg Spilregler og sæt Boss Test Floor (1–5) i RoomController. Tryk Play.
+Direkte boss-test starter med 5/5 HP uden opgraderinger; de fire rum regnes som ryddede på den valgte etage. Stop Play før du ændrer etagen.
+Testvalget gælder kun en ny Play-session direkte i boss-scenen, aldrig et eksisterende run eller et build. R starter fortsat et normalt nyt run under kamp.
+
+DESIGNVALG
+Lyde styres af Resources/CatacombsSfx.prefab. SFX-lydstyrke er 0,65; spillerens fodtrin er 0,2.
+Skud: spiller laser7, fjender og boss laser9. Én lyd pr. salve, ikke pr. projektil.
+Fodtrin: footstepsloop4_fast, kun når spilleren går. Ingen fjendefodtrin.
+Stormløb: cannon1 én gang når en Charger eller boss starter selve stormløbet. Dash: sword3 når spilleren starter et dash; ingen lyd ved cooldown. Varsler er fortsat uden lyd.
+Død: boss deathscream_alien1 + fanfare3, normale fjender deathscream_human3, spiller deathscream_human1.
+Projektiltræf bruger impact3, også mod vægge. Nærkampstræf bruger impact7, kun når spilleren faktisk tager skade.
+Døre bruger dooropen4 ved åbning, men ikke ved genindlæsning af en allerede gennemført boss.
+Dødslyde fortsætter efter figuren forsvinder; pause standser SFX midlertidigt uden at standse musikken.
+Opgraderingsvalg bruger powerup16; Livskilde bruger i stedet powerup4, også ved fuldt liv.
+Spillerskade bruger damage3, kun når HP faktisk falder; træf- og dødslyde er stadig med.
+Bossindgangen bruger dooropen4 én gang ved retur til gangen efter fjerde rum, ikke ved senere genindlæsninger.
+Trappen til næste etage bruger mechanicalnoise1, som fortsætter over sceneskiftet.
+Boss på etage 3 har puls, men ingen stråler. Etage 4 får én stråle ved 50% HP, aldrig en ekstra.
+Etage 5 får første stråle ved 75% HP og en modsat stråle ved 40%. Stråler er 1 enhed brede og drejer 30 grader/sekund.
+Stråler varsles i 1,2 sekund, stoppes af vægge/grave og fortsætter under skud og stormløb. Træf giver 1 HP med normal dash-/skadeimmunitet.
+Strålecyklus: 1,2 sekunders ufarligt varsel, en fuld skadelig rotation på 360 grader (12 sekunder ved 30 grader/sekund), derefter 4 sekunders pause.
+Begge stråler deler cyklus. En ny stråle midt i en cyklus deltager først ved næste varsel.
+Hvert varsel starter 25 grader med uret fra spillerens aktuelle position (ekstra afstand tæt på bossen af hensyn til strålens bredde). Retningen låses under varslet, og den aktive stråle drejer derefter mod uret; den følger ikke spillerens sigteretning eller bevægelse.
+Stråler er rav/orange med lysegul kerne, tynd varselslinje og kantmarkering. Let flimmer ændrer ikke bredden.
+BossBeamSurface opdeler hver stråle i 48 smalle striber, som stoppes hver for sig ved vægge og grave. Grafik og skade bruger samme kollisionslængder; strålen bøjer ikke gennem dækning.
+Enden følger dermed den ramte overflade. En blød, ravfarvet kontaktglød breder sig langs væggen, og spidsen toner let ud. Fri passage ved siden af en grav slipper kun den ublokerede del af strålen igennem.
+Stråler toner ud på 0,2 sekund i starten af pausen, men skade og løkkelyd stopper straks.
+Boss fra etage 3: dækningspuls tidligst hvert 12. sekund (etage 5: 10), kun mellem angreb. En aktiv stråle får altid sin fulde rotation, før en ventende puls starter.
+Pulsen varsles i 2 sekunder (etage 5: 1,6). Bossen står stille, stråler slukkes og fjendeskud fjernes. Spilleren kan stadig bevæge sig og skyde.
+Pulsen rammer én gang for 1 HP ved fri sigtelinje; grave/vægge beskytter. Efter 0,8 sekund genoptages kampen, men stråler holder først 4 sekunders pause og varsles derefter igen.
+Strålelyd: vehicle_plainloop på 50% af SFX-lydstyrken. Pulsopladning: depressurizing; udløsning: exp_long4. Løkker stopper ved død/sceneskift og fryser under pause.
+Testtilstand (kun Unity Editor): Åbn Catacombs > Testing Mode, vælg etage og rum, og start testen. Boss-inspektøren har også en knap til vinduet.
+Testvinduet kan skifte rum, genstarte kampen med samme opgraderinger og fuldt liv, slå udødelighed til, helbrede spilleren, tilføje opgraderinger og sætte bossens HP-procent.
+Nye tests starter med 5/5 HP. Under Play kan opgraderinger beholdes ved rumskift. R under kamp starter et normalt run og slår udødelighed fra; på sejrsskærmen går R til hovedmenuen.
+Bossens allerede oplåste stråler låses ikke igen ved højere HP; genstart kampen for at nulstille mekanikker. Ved nederlag skal kampen genstartes, ikke blot helbredes.
+Testknapper ændrer kun det aktuelle run, ikke scener, opgraderings-assets eller tutorial-status. Testkode og vindue findes ikke i builds.
+SFX kommer fra Juhani Junkalas Essential Retro Video Game Sound Effects Collection (CC0); INFO.txt følger med i lydmappen.
+Musik: Strong Boss under bosskamp, MonsterVania #1 under normale kampe og tutorialkampen.
+Infinite Darkness spiller uden for kamp, også efter et ryddet rum, ved belønninger og på slutskærme.
+CatacombsMusic-prefabben i Resources styrer lydstyrke (0,25) og korte overgange (0,65 sekund).
+Musikken fortsætter under pause og mellem scener med samme tema. Kun de tre valgte numre refereres af prefabben.
+Etage 1: 3–4 fjender. De første to kampe er kun Crawlers; de sidste to har præcis én Shooter.
+Etage 2: 5–7 fjender, heraf 1–2 Shooters. Ingen Chargers på de første to etager.
+Etage 3: 5–7 fjender, præcis én Charger og 1–2 Shooters. Første kamp er altid fem fjender, heraf én Shooter.
+Etage 4: 8–10 fjender, heraf 2–3 Shooters og 2–3 Chargers.
+Etage 5: 11–14 fjender, heraf 3–4 Shooters og 3–4 Chargers. Resten er Crawlers.
+RunState.TotalFloors er 5. Blandingen trækkes første gang et rum besøges og caches for resten af etagen.
+Introduktionsrækkefølgen følger antal ryddede rum, ikke hvilken dør du vælger.
+Rummene vælges frit via gangens døre; sværhedsgraden skalerer med etage, ikke rummets navn.
+Normale fjenders HP er fast på alle etager: Crawler 5, Shooter 4, Charger 18. Antal og typer skalerer stadig.
+Bossen har 50/125/200/275/350 HP. Angrebspausen er 2,3/1,95/1,6/0,85/0,65 sekunder på etage 1–5.
+Skudvarslet er 1,1/1,0/0,9/0,55/0,45 sekund. Ved halvt HP bliver pausen efter skud 30 % kortere.
+Viften vokser fra 3 til 7 skud, ringen fra 8 til 12.
+Fra tredje boss flyver både vifte- og ringskud med 7,5 enheder/sekund. Boss 4 og 5 beholder denne hastighed.
+Shooters skyder med 5,3 på etage 1–3 og samme hurtige 7,5 på etage 4–5. Spillerens skudhastighed er uændret.
+Opladningskugler viser præcis ringens skudretninger. Kun bossen giver en opgradering; ingen automatisk healing.
+Bossen går med 1,3 enheder/sekund (spilleren starter med 4,5). Fra etage 2 følger et stormløb efter to afstandsangreb.
+Bossrummets grave står ved (±5,8; ±2), så passagerne til væggene er mindst 2,125 enheder brede og passer til bossens størrelse.
+Stormløbet varsles i 0,9 sekund på etage 2–3, 0,65 på etage 4 og 0,55 på etage 5.
+Varslet er en rød, rektangulær bane med en skarp pil. Retningen låses ved varslet.
+ChargeTelegraph giver boss og Chargers samme røde, firkantede stil uden afrundede ender, med en synlig pil ved enden.
+Chargers har en smal linje på 0,16 enheder; bossens linje er lidt bredere: 0,35.
+Længden følger fart × varighed: Charger 4,95 enheder, boss 5,2. Vægge og grave forkorter linjen til det sted, hvor kroppen stoppes.
+Bossen stormer med 8 enheder/sekund i højst 0,65 sekund og stopper mod vægge, grave og spilleren.
+Efter stormløbet hviler den i 1,1 sekund. Første boss beholder kun sine eksisterende afstandsangreb.
+Alle fjendetræf koster 1 HP. Efter skade har spilleren 0,85 sekund beskyttelse.
+Dash: 0,16 sekund, 1,1 sekund cooldown. Stillestående dash bruger sidste bevægelsesretning.
+Opgraderinger kan vælges flere gange. Projektiler har et loft på 5.
+Splintret skud deler den samlede salveskade ligeligt mellem projektilerne; det giver spredning, ikke ekstra totalskade.
+Eksempel: skade 3 med 2 projektiler giver 1,5 pr. projektil. Skarpe runer øger salvens samlede skade med 1.
+Fjenders resterende HP og spillerens projektilskade understøtter brøker; spillerens HP og fjendtlige angreb er stadig hele tal.
+HUD viser SKADE/SALVE, så værdien er den samlede skade, hvis alle projektiler rammer.
+Livskilde heler 2 HP, dog aldrig over maksimalt HP. Den øger ikke maksimalt HP; ved fuldt liv giver den intet ekstra.
+Bossen skifter mellem en projektilvifte og en ring. Under halvt liv angriber den oftere.
+Kampen og fjendtlige projektiler stopper, når et rum er ryddet.
+Direkte Play fra et normalt kammer starter med basisværdier for nem test.
+Et direkte load af bossrummet uden fire gennemførte rum sender spilleren tilbage til gangen.
+Der gives præcis én opgradering pr. boss. Et sceneload bevarer de samme tre valg og kan ikke give dobbelt belønning.
+Trappen og den sidste sejr venter på belønningsvalget. Normale døre åbner straks, når sidste fjende dør.
+HUD viser liv, dash-cooldown, etage, rumfremgang, stats og opgraderinger. Stats er stadig 18.
+Kontrolteksten er i pausemenuen. Uden for tutorialen vises tips kun ved tryk på T, aldrig automatisk ved rumskift eller sejr.
+Tutorialens aktuelle instruktion vises konstant og ændres med handlingerne; T skjuler den ikke.
+Gentagne opgraderinger samles, fx Skarpe runer ×3.
+
+Vægge og grave blokerer både bevægelse og projektiler.
+Grafikken er en enkel original pixel-prototype. Musik og de valgte retro-lyde er tilføjet; ekstra animationer kan vente.
+CatacombsBuilder i Editor blev brugt til at oprette normale redigerbare sceneobjekter.
+Den kører ikke i spillet og overskriver ikke eksisterende baner.
+CatacombsHallwaySetup (menu: Catacombs/Add hallway) tilføjer gangen og migrerer rumtyper.
+Den bevarer kamprummenes layout og overskriver ikke en eksisterende gangscene.
+
+RUMLAYOUTS
+01-Pillar-Hall: Søjlehallen — fire fritstående søjler og åbne ruter imellem.
+02-Ritual-Chamber: Ritualkammeret — et stort centralt alter med plads til at løbe rundt om.
+03-Burial-Corridors: Gravgangene — tre baner mellem lange gravrækker med en tværpassage i midten.
+04-Forgotten-Crossroads: Det glemte vejkryds — fire adskilte murstykker og et åbent midterfelt.
+05-Empty-Ossuary: Den tomme knoglesal — åben arena uden indvendig dækning; knoglerne langs kanten er pynt.
+06-Grave-Chamber: Gravkammeret — det oprindelige layout med fire hjørnegrave og segl på gulvet.
+07-Warden-Chamber: Bossrummet. 00-Hallway: den genbrugelige gang.
+Tutorial-Arrival er den første buildscene; Tutorial-Grave-Chamber bevarer det oprindelige fire-grave-layout.
+CatacombsRoomLayouts (menu: Catacombs/Add distinct room layouts) installerer de seks layouts én gang og migrerer gamle scenenavne uden at ændre deres GUID'er.
+Når Room layout findes i en scene, springes den over, så efterfølgende manuelle ændringer bevares.
+
+FLERE ETAGER
+CatacombsFloorSetup (menu: Catacombs/Enable multiple floors) erstatter de gamle faste fjender med spawnmarkører og tilføjer bosstrappen.
+Eksisterende RoomEncounter-komponenter og bosstrapper overskrives ikke ved gentagen opsætning.
+Spawnmarkører ligger under Spilregler/Encounter spawn points. Justér dem, hvis du flytter vægge.
+Der skal være mindst 14 klare markører, mindst 3 enheder fra spillerens start og med plads omkring hver fjende.
+Enemy-prefabs og spawnmarkører kan redigeres på RoomEncounter. Antal/type-fordeling findes i FloorEncounter.
+BossController.extraHealthPerFloor styrer bossens ekstra HP. Telegrapher og Charger-vægkontrol er bevaret.
+CatacombsTutorialSetup (menu: Catacombs/Add tutorial and clean HUD) tilføjer tutorialscener uden at overskrive eksisterende kopier og installerer HUD-beskeder/knapper.

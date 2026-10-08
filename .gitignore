@@ -1,0 +1,31 @@
+# Unity-genererede mapper
+/[Ll]ibrary/
+/[Tt]emp/
+/[Oo]bj/
+/[Ll]ogs/
+/[Uu]ser[Ss]ettings/
+/[Mm]emoryCaptures/
+/[Rr]ecordings/
+
+# Eksporterede spil (kildeprojektet ligger i Assets, Packages og ProjectSettings)
+/[Bb]uild/
+/[Bb]uilds/
+
+# Lokale editorindstillinger og genererede projektfiler
+/.vscode/
+/.vs/
+/.idea/
+*.csproj
+*.sln
+*.slnx
+*.unityproj
+*.booproj
+*.suo
+*.user
+*.userprefs
+*.pidb
+
+# macOS-metadata, også i undermapper
+.DS_Store
+._*
+__MACOSX/
