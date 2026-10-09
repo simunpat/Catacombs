@@ -6,15 +6,6 @@ Spilleren kæmper sig ned gennem fem etager i katakomberne. På hver etage vælg
 
 Efter de første fire bosser vælger man mellem helbredelse og to tilfældige opgraderinger. Opgraderinger beholdes resten af runnet. Den sidste boss giver sejr; dør spilleren, starter man forfra uden sine opgraderinger.
 
-## Åbn og spil
-
-1. Klon repositoryet, eller download og udpak det.
-2. Tilføj projektmappen i Unity Hub, og åbn den med **Unity 6000.6.2f1**.
-3. Vent på, at Unity importerer assets og henter projektets pakker.
-4. Åbn `Assets/Scenes/MainMenu.unity`, og tryk **Play**.
-
-Scener og prefabs er allerede med i projektet. Første spilstart viser en kort introduktion til styringen.
-
 ## Styring
 
 - **WASD / piletaster:** Bevægelse.
@@ -43,7 +34,3 @@ Flere detaljer findes i [projektets spil- og tekniknoter](Assets/Catacombs/READ-
 - **Musik:** [High Quality 8-bit / Chiptune Musics](https://hydrogene.itch.io/high-quality-8-bit-musics) af HydroGene, udgivet under **CC0**. Spillet bruger *Strong Boss* i bosskampe, *MonsterVania #1* i normale kampe og *Infinite Darkness* uden for kamp.
 
 CC0-oplysningerne gælder de nævnte lydpakker, ikke automatisk hele projektets kode eller Unity-indhold.
-
-## Filer i repositoryet
-
-`Assets` (inklusive `.meta`-filer), `Packages` og `ProjectSettings` skal med. `.gitignore` udelader blandt andet Unitys cache, midlertidige filer, lokale editorindstillinger og eksporterede builds. Unity gendanner selv sine genererede filer, når projektet åbnes.
